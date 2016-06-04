@@ -55,6 +55,7 @@ body {
 	color: #666;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
+	background: url("/images/bg.png");
 }
 
 h1 {
@@ -113,8 +114,8 @@ nav.main-nav {
 
 	/*max-width: 600px;*/
 	/*width:100%;*/
-	background: #fff;
-	background: rgba(255,255,255,.90);
+	/*background: #fff;*/
+	/*background: rgba(255,255,255,.90);*/
 	margin: 0 auto;
 	text-align: right;
 	/*position: fixed;*/
@@ -665,9 +666,9 @@ a.symbol:hover {
     color: #BCD4DA;
 }
 
-code { 
-	font-family:Menlo, Monaco, Courier; 
-	background-color:#EEE; font-size:14px; 
-	padding: 4px; 
+code {
+	font-family:Menlo, Monaco, Courier;
+	background-color:#EEE; font-size:14px;
+	padding: 4px;
 	font-weight: 600;
 }
