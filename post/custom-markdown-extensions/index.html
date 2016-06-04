@@ -1,0 +1,238 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Srinath Sankar">
+		<meta name="description" content="Describe your website">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Custom Markdown extensions in Python &middot; I Am Bot</title>
+		<link rel="shortcut icon" href="http://iambot.net/images/favicon.ico">
+		<link rel="stylesheet" href="http://iambot.net/css/style.css">
+		<link rel="stylesheet" href="http://iambot.net/css/highlight.css">
+		
+
+		
+		<link rel="stylesheet" href="http://iambot.net/css/monosocialiconsfont.css">
+		
+
+		
+		<link href="http://iambot.net/index.xml" rel="alternate" type="application/rss+xml" title="I Am Bot" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://iambot.net/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+		<a href='http://iambot.net/about'>About</a>
+	
+
+	
+	<a class="cta" href="http://iambot.net/index.xml">Subscribe</a>
+	
+</nav>
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Custom Markdown extensions in Python</h1>
+                    <h2 class="headline">
+                    October 17, 2014 
+                    <br>
+                    
+                    </h2>
+                </header>
+                <section id="post-body">
+                    <p><a href="http://daringfireball.net/projects/markdown/">Markdown</a>, that unwieldy, undying, but still relevant writing format has been through some <a href="http://blog.codinghorror.com/standard-markdown-is-now-common-markdown/">controversy</a> recently. There are tons of custom implementations and extensions, with <a href="https://help.github.com/articles/github-flavored-markdown/">Github flavored markdown</a> being one of the more popular dialects. GFM is a prime example of how Markdown can be enhanced with meaningful extensions - from URL auto-linking, tables, to task lists.</p>
+
+<p>One of the reasons for alternate implementations is that Markdown doesn&rsquo;t have an official spec. Unfortunately, attempts to <a href="http://commonmark.org/">standardize</a> the format has not been blessed by the original creator, John Gruber.</p>
+
+<p>So why not have some fun and create our own Markdown extension! For this exercise, we will try and mimic the <a href="https://help.github.com/articles/writing-on-github/#task-lists">task list</a> syntax, which is also similar to the orgmode <a href="http://orgmode.org/manual/Checkboxes.html#Checkboxes">checkbox list</a>. We have to transform the following syntax:</p>
+
+<pre><code>- [ ] Some important task
+- [x] A task that is already done
+- [ ] Another thing for me to do
+</code></pre>
+
+<p>into a list with checkboxes:</p>
+
+<p><img src="https://www.dropbox.com/s/tl9rwg3wmghodzn/Screenshot%202014-10-18%2010.46.47.png?dl=1" alt="Markdown task list" /></p>
+
+<p>Let us begin! We start off by creating a custom markdown class, extending from <code>markdown2.Markdown</code>. Fortunately for us, markdown2 offers pre and post processing hooks, which we can use to plug in our formatting rules. Since our syntax is similar to Markdown&rsquo;s list syntax, we format it during preprocessing.</p>
+
+<pre><code class="language-python">import markdown2
+
+class CustomMarkdown(markdown2.Markdown):
+
+  ''' Our custom markdown class '''
+  def preprocess(self, text):
+	  pass
+</code></pre>
+
+<p>Next up, we have to define the regex and corresponding HTML template for matching and replacing.</p>
+
+<pre><code class="language-python">reTaskList = re.compile('''
+(?P&lt;prefix&gt;[\r\n|\n|\r]*)
+-\s\[(?P&lt;done&gt;[x|\s]?)\]\s*(?P&lt;item&gt;.*)
+(?P&lt;suffix&gt;[\r\n|\n|\r]*)
+''', re.IGNORECASE | re.MULTILINE | re.VERBOSE)
+
+LIST_ITEM_TEMPLATE = '''
+&lt;li class=&quot;markdown-task-item %s&quot;&gt;
+  &lt;label class=&quot;markdown-task-label&quot;&gt;
+	&lt;input type=&quot;checkbox&quot; %s&gt;
+	%s
+  &lt;/label&gt;
+&lt;/li&gt;'''
+</code></pre>
+
+<p>Our replacing logic is simple. For every match in the pattern, we replace it with the <code>li</code> definition in the template. If a list item is checked with <code>[x]</code>, we make sure that the checkbox is also checked. Also, we add a class denoting if the item is <code>pending</code> or <code>completed</code>. This can come handy for formatting.</p>
+
+<pre><code class="language-python">def preprocess(self, text):
+  def replace(match):
+    item = match.groups()
+    html = ''
+    # The starting of the list if denoted by the first group having 2 or more newline chars
+    if len(item[0]) &gt;= 2:
+      html += '\n&lt;ul class=&quot;md-task-list&quot;&gt;'
+
+    # Now, toggle the checked status
+    checked, klass = ('checked=&quot;checked&quot;', 'completed') if item[1].lower() == 'x' else ('', 'pending')
+    html += CustomMarkdown.LIST_ITEM_TEMPLATE % (klass, checked, item[2])
+
+    # Similarly, check for ending
+    if len(item[3]) &gt;= 2:
+      html += '&lt;/ul&gt;\n'
+
+    return html
+
+  return CustomMarkdown.reTaskList.sub(replace, text)
+</code></pre>
+
+<p>And as a final step, define the actual method that will use our <code>CustomMarkdown</code> processor.</p>
+
+<pre><code class="language-python">def markdown(text, html4tags=False, tab_width=markdown2.DEFAULT_TAB_WIDTH, safe_mode=None, extras=None, link_patterns=None, use_file_vars=False):
+
+	return CustomMarkdown(html4tags=html4tags, tab_width=tab_width, safe_mode=safe_mode, extras=extras, link_patterns=link_patterns, use_file_vars=use_file_vars).convert(text)
+</code></pre>
+
+<p>Find the entire code and a working example in <a href="https://gist.github.com/Checksum/e3e8f052c378f8a0a3a9">this gist</a>.</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/Checksum">
+                        <img class="avatar" src="http://iambot.net/images/avatar.png">
+                        <div>
+                            <span class="dark">Srinath Sankar</span>
+                            <span>Full stack developer. Product guy.</span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fiambot.net%2fpost%2fcustom-markdown-extensions%2f - Custom%20Markdown%20extensions%20in%20Python by @Checksum"><span class="icon-twitter"> Tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'iambot';
+    var disqus_identifier = 'http:\/\/iambot.net\/post\/custom-markdown-extensions\/';
+    var disqus_title = 'Custom Markdown extensions in Python';
+    var disqus_url = 'http:\/\/iambot.net\/post\/custom-markdown-extensions\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://iambot.net/post/read-only-mode-for-webapps-using-nginx/">Read only mode for webapps using Nginx<aside class="dates">Jun 4</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://iambot.net/post/custom-markdown-extensions/">Custom Markdown extensions in Python<aside class="dates">Oct 17</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://iambot.net/post/using-pjax-with-tornado/">Using PJAX with Tornado<aside class="dates">Oct 9</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://iambot.net/post/a-fresh-start/">A fresh start<aside class="dates">Jan 11</aside></a>
+        </li>
+        
+   
+</ul>
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/Checksum">
+        circlegithubalt
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/Checksum">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Srinath Sankar
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://iambot.net/js/main.js"></script>
+<script src="http://iambot.net/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+    </body>
+</html>
