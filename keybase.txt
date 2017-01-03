@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/checksum
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://iambot.net
+  * I am checksum (https://keybase.io/checksum) on keybase.
+  * I have a public key with fingerprint EEA1 CD10 320D 497A B440  F6BD 45DD 4E24 58A5 101A
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101a8c34eba1cae86e89377289271fa6a03ee262dbc1f9f79ef20b457c2cf3473ed0a",
+            "fingerprint": "eea1cd10320d497ab440f6bd45dd4e2458a5101a",
+            "host": "keybase.io",
+            "key_id": "45dd4e2458a5101a",
+            "kid": "0101a8c34eba1cae86e89377289271fa6a03ee262dbc1f9f79ef20b457c2cf3473ed0a",
+            "uid": "96fa8f226d3801741e807533552bc419",
+            "username": "checksum"
+        },
+        "service": {
+            "hostname": "iambot.net",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1483441429,
+    "expire_in": 157680000,
+    "prev": "1daa80e4cde1bcecc3d9444827cb00dec2c94e5a94c5be8ffdcb0b992207792a",
+    "seqno": 4,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.61
+Comment: https://keybase.io/crypto
+
+yMImAnicrVJJaBRBFJ3ROJKoKELEDcXWIIFRu6urp7tHERfEDRe8uBAcq6t+TzrJ
+dI/dPTFR4oaD4rgnRFCMkyCKFw8uICISRXMwCC4JKIkHEReMHkTjEkxiddCbR+vy
+qcd777//+ffHDA8Vhad8Lq69fub03XD73YZMaFNltniXYDisVojvEiphqEAVA89P
+VFpMiAuiJEpEozIGg0iUgBYDTZdVFWk6UiWTxIgoA6AYYgaVTN1UdTCRaGBFpYia
+MlZlYCIRooJp2Ulw065l+9wWgLsxSZSRyLCuEgNj0YwZDCuMYUBY0YgSdObCcscL
+FDycQTyYazkc45/EULx/8P9z7syQnR4ziWYiFGOyJkoqlkATVUWWFQUZFEt6QPTA
+tUkKOJuWA630MimhLipwtNqiECw2mOQPwyIpw/Hn2uBzZdp1fIc6VRwv9/10PJD5
+temAtwOMxB+HhGHZjC+RC6rB9SzHFuISZ1LfCiwlrMkYSxjpUQFq0pYLCStgKGpM
+E/kL2kA1t5QYIZoImDKQDAqUykzHGGtIpYYoMuDz6xgUomOqGKCZJuO4oesIiaqq
+o2AnHmy3HSGOeUyS5JaelbSJn3FBqLvXWlYQCheFIiOGBccVKioc9/fkmnaPHJhd
+2Hiq/Wf2YMatzY+PLBZWdh5fM/ZHb96Nau063dh6KXfz2Lf85eSSq1cmvbrh6nPO
+zZ8/b/+dvql7ZjV1f1qxtrf7AOrsL2wsmTY7UVMRbx6ombWw/2QkuXmvs3BRz+iL
+9urS8IZ5kbpof7i66+GXpk2/lr4efehKtls4nPxuPlqfu7Wg4nbZ422Rnq+329If
+murPfFzXUDCl7WbL2Tdd40/kWp89mTrj3b4jg9kHk5exyc9f5spyVcu/pCYN9njf
+TIhvffpi4vuB/M8jB88vsVaZ1ybke3ffaGvZvG7wc890eut7Pi309xVn39Z3dKCd
+W5qPXiBrH45KXShhK/d9mlmaNX4DNrlG8A==
+=ZvFX
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/checksum
+
+==================================================================
