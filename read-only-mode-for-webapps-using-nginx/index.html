@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Srinath Sankar">
+<meta name="description" content="Describe your website">
+<meta name="generator" content="Hugo 0.40.3" />
+<title>Read only mode for webapps using Nginx</title>
+<link rel="shortcut icon" href="http://iambot.net/images/favicon.ico">
+<link rel="stylesheet" href="http://iambot.net/css/style.css">
+<link rel="stylesheet" href="http://iambot.net/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="http://iambot.net/css/monosocialiconsfont.css">
+
+
+
+<link href="http://iambot.net/index.xml" rel="alternate" type="application/rss+xml" title="I Am Bot" />
+
+
+<meta property="og:title" content="Read only mode for webapps using Nginx" />
+<meta property="og:description" content="Put your webapp in read only or maintenance mode with Nginx" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://iambot.net/read-only-mode-for-webapps-using-nginx/" />
+
+
+
+<meta property="article:published_time" content="2016-06-04T11:30:19&#43;05:30"/>
+
+<meta property="article:modified_time" content="2016-06-04T11:30:19&#43;05:30"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Read only mode for webapps using Nginx">
+<meta itemprop="description" content="Put your webapp in read only or maintenance mode with Nginx">
+
+
+<meta itemprop="datePublished" content="2016-06-04T11:30:19&#43;05:30" />
+<meta itemprop="dateModified" content="2016-06-04T11:30:19&#43;05:30" />
+<meta itemprop="wordCount" content="509">
+
+
+
+<meta itemprop="keywords" content="lua,redis,nginx," />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Read only mode for webapps using Nginx"/>
+<meta name="twitter:description" content="Put your webapp in read only or maintenance mode with Nginx"/>
+<meta name="twitter:site" content="@https://www.twitter.com/Checksum"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://iambot.net/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/categories'>Categories</a>
+  	
+ 		<a href='/tags'>Tags</a>
+  	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="http://iambot.net/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Read only mode for webapps using Nginx</h1>
+        <h2 class="subtitle">Put your webapp in read only or maintenance mode with Nginx</h2>
+        <h2 class="headline">
+        June 4, 2016
+        <br>
+        
+        
+            
+                <a href="http://iambot.net/tags/lua">lua</a>
+            
+                <a href="http://iambot.net/tags/redis">redis</a>
+            
+                <a href="http://iambot.net/tags/nginx">nginx</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>Quite often, I&rsquo;ve had to put webapps in read only mode during maintenance activities like migrating databases, moving web servers, etc. During such windows, users are allowed to browse and read their existing data, but no write operations are allowed as they may lead to data inconsistency.</p>
+
+<p>Most major frameworks have some sort of maintenance mode (including Django and Rails) which restricts the activity that a user is allowed to perform. However, I wanted a generic pattern that can be used across various platforms. Nginx being the awesome go-to tool that it is, allows one to leverage the power of Lua scripting with endless possibilities. The method described below relies on Nginx with a couple of plugins which make it easy to configure and extend.</p>
+
+<p>So without further ado, here is <strong><a href="https://github.com/Checksum/gridlock">gridlock</a></strong></p>
+
+<h3 id="requirements">Requirements</h3>
+
+<ul>
+<li><a href="http://nginx.org/">Nginx</a> - all awesome reverse proxy</li>
+<li><a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a> - for embedding Lua scripts in our Nginx config</li>
+<li><a href="http://redis.io">Redis</a> - to store configuration</li>
+<li><a href="https://github.com/openresty/lua-resty-redis">lua-rest-redis</a> - reach our Redis configuration from Nginx</li>
+</ul>
+
+<p>A easier way to get these in one shot is to install the <a href="http://openresty.org">openresty</a> bundle, which comes with the required modules and is way easier to install.</p>
+
+<h3 id="technique">Technique</h3>
+
+<p>The technique is simple - we use redis to set various keys, which are picked up by the Lua script. If the readonly mode is set, we then block all HTTP requests which modify a resource. So anything other than a GET and HEAD is blocked. You can set an option to determine how Nginx blocks the resource - either by throwing a 403 Forbidden error, or by setting a header for your app server to handle it however you deem fit. A custom header <code>X-READONLY</code> is set to true so that the app can handle it accordingly.</p>
+
+<h3 id="settings">Settings</h3>
+
+<p>The following redis keys control the behavior of the gatekeeper:</p>
+
+<ul>
+<li><code>SET gridlock.readonly true</code> - Turn on readonly mode</li>
+<li><code>SET gridlock.readonly.mode redirect|forbid</code> - if <code>forbid</code>, nginx will exit with a 403 error. If <code>redirect</code>, you can set a common error page to redirect to</li>
+<li><code>SET gridlock.readonly.redirect_url</code>- Define the redirect url for your app. If this is not set, and the mode is set to <code>redirect</code>, we will redirect to the referer of the original request</li>
+<li><code>LPUSH gridlock.readonly.allowed</code> - A list of URLs that you want to explicitly allow. These are for exceptions like login forms which you would still want to function</li>
+</ul>
+
+<p>Once you have all the settings in place, you just flip the switch by setting <code>gridlock.readonly</code> to true. The changes are live instantly without a reload! Once you maintainance window is done, simply set it to false, or delete the key. Zero downtime switching FTW!</p>
+
+<h3 id="demo-source">Demo/Source</h3>
+
+<p>The code for the script and a simple Node.js app are <a href="https://github.com/Checksum/gridlock">available in the repo</a>.</p>
+
+<h3 id="warning">Warning</h3>
+
+<p>Although I&rsquo;ve tested it out internally, absolutely no guarantees offered! If this breaks or burns your server, you are on your own.</p>
+
+<h3 id="future">Future</h3>
+
+<p>Currently, redis is hit everytime a request comes into Nginx. This obviously doesn&rsquo;t work for high traffic sites. Figure out a way to use other lifecycle methods to periodically update and cache the settings.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/Checksum">
+    <img class="avatar" src="http://iambot.net/images/avatar.png">
+    <div>
+        <span class="dark">Srinath Sankar</span>
+        <span>Full stack developer. Product guy.</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fiambot.net%2fread-only-mode-for-webapps-using-nginx%2f - Read%20only%20mode%20for%20webapps%20using%20Nginx by @Checksum"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "iambot" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/custom-markdown-extensions-in-python/">Custom Markdown extensions in Python<aside class="dates">Oct 17 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="/using-pjax-with-tornado/">Using PJAX with Tornado<aside class="dates">Oct 9 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="/a-fresh-start/">A fresh start<aside class="dates">Jan 11 2014</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/Checksum">
+        circlegithubalt
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/Checksum">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Srinath Sankar
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://iambot.net/js/main.js"></script>
+<script src="http://iambot.net/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

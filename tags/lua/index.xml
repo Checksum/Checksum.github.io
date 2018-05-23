@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lua on I Am Bot</title>
+    <link>http://iambot.net/tags/lua/</link>
+    <description>Recent content in Lua on I Am Bot</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Jun 2016 11:30:19 +0530</lastBuildDate>
+    
+	<atom:link href="http://iambot.net/tags/lua/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Read only mode for webapps using Nginx</title>
+      <link>http://iambot.net/read-only-mode-for-webapps-using-nginx/</link>
+      <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
+      
+      <guid>http://iambot.net/read-only-mode-for-webapps-using-nginx/</guid>
+      <description>Quite often, I&amp;rsquo;ve had to put webapps in read only mode during maintenance activities like migrating databases, moving web servers, etc. During such windows, users are allowed to browse and read their existing data, but no write operations are allowed as they may lead to data inconsistency.
+Most major frameworks have some sort of maintenance mode (including Django and Rails) which restricts the activity that a user is allowed to perform.</description>
+    </item>
+    
+  </channel>
+</rss>

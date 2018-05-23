@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on I Am Bot</title>
+    <link>http://iambot.net/tags/</link>
+    <description>Recent content in Tags on I Am Bot</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Jun 2016 11:30:19 +0530</lastBuildDate>
+    
+	<atom:link href="http://iambot.net/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lua</title>
+      <link>http://iambot.net/tags/lua/</link>
+      <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
+      
+      <guid>http://iambot.net/tags/lua/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
+      <link>http://iambot.net/tags/nginx/</link>
+      <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
+      
+      <guid>http://iambot.net/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://iambot.net/tags/python/</link>
+      <pubDate>Fri, 17 Oct 2014 11:30:06 +0530</pubDate>
+      
+      <guid>http://iambot.net/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>http://iambot.net/tags/redis/</link>
+      <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
+      
+      <guid>http://iambot.net/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

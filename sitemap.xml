@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://iambot.net/</loc>
-    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://iambot.net/post/read-only-mode-for-webapps-using-nginx/</loc>
+    <loc>http://iambot.net/read-only-mode-for-webapps-using-nginx/</loc>
     <lastmod>2016-06-04T11:30:19+05:30</lastmod>
   </url>
   
@@ -18,18 +13,71 @@
   </url>
   
   <url>
-    <loc>http://iambot.net/post/custom-markdown-extensions/</loc>
+    <loc>http://iambot.net/custom-markdown-extensions-in-python/</loc>
     <lastmod>2014-10-17T11:30:06+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://iambot.net/post/using-pjax-with-tornado/</loc>
+    <loc>http://iambot.net/using-pjax-with-tornado/</loc>
     <lastmod>2014-10-09T11:29:50+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://iambot.net/post/a-fresh-start/</loc>
+    <loc>http://iambot.net/a-fresh-start/</loc>
     <lastmod>2014-01-11T11:51:01+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/tags/lua/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/categories/meta/</loc>
+    <lastmod>2014-01-11T11:51:01+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/tags/nginx/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/post/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/tags/python/</loc>
+    <lastmod>2014-10-17T11:30:06+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/tags/redis/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://iambot.net/tags/</loc>
+    <lastmod>2016-06-04T11:30:19+05:30</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

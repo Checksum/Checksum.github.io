@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Meta on I Am Bot</title>
+    <link>http://iambot.net/categories/meta/</link>
+    <description>Recent content in Meta on I Am Bot</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 11 Jan 2014 11:51:01 +0530</lastBuildDate>
+    
+	<atom:link href="http://iambot.net/categories/meta/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A fresh start</title>
+      <link>http://iambot.net/a-fresh-start/</link>
+      <pubDate>Sat, 11 Jan 2014 11:51:01 +0530</pubDate>
+      
+      <guid>http://iambot.net/a-fresh-start/</guid>
+      <description>After yet another prolonged absence, I&amp;rsquo;m hoping the new year will mean better things for this blog. I&amp;rsquo;ve moved to a new domain registrar, a new host and a new blogging platform. After much deliberation, I moved away from Godaddy to Namecheap and it was hassle free. I kind of outgrew my old shared host (thanks to http://lvcs.net for the really cheap plan where I paid only about $5 a year for running a couple of sites).</description>
+    </item>
+    
+  </channel>
+</rss>

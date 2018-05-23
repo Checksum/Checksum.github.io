@@ -7,62 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 04 Jun 2016 11:30:19 +0530</lastBuildDate>
-    <atom:link href="http://iambot.net/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="http://iambot.net/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Read only mode for webapps using Nginx</title>
-      <link>http://iambot.net/post/read-only-mode-for-webapps-using-nginx/</link>
+      <link>http://iambot.net/read-only-mode-for-webapps-using-nginx/</link>
       <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
       
-      <guid>http://iambot.net/post/read-only-mode-for-webapps-using-nginx/</guid>
-      <description>
-
-&lt;p&gt;Quite often, I&amp;rsquo;ve had to put webapps in read only mode during maintenance activities like migrating databases, moving web servers, etc. During such windows, users are allowed to browse and read their existing data, but no write operations are allowed as they may lead to data inconsistency.&lt;/p&gt;
-
-&lt;p&gt;Most major frameworks have some sort of maintenance mode (including Django and Rails) which restricts the activity that a user is allowed to perform. However, I wanted a generic pattern that can be used across various platforms. Nginx being the awesome go-to tool that it is, allows one to leverage the power of Lua scripting with endless possibilities. The method described below relies on Nginx with a couple of plugins which make it easy to configure and extend.&lt;/p&gt;
-
-&lt;p&gt;So without further ado, here is &lt;strong&gt;&lt;a href=&#34;https://github.com/Checksum/gridlock&#34;&gt;gridlock&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;requirements:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Requirements&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://nginx.org/&#34;&gt;Nginx&lt;/a&gt; - all awesome reverse proxy&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/openresty/lua-nginx-module&#34;&gt;lua-nginx-module&lt;/a&gt; - for embedding Lua scripts in our Nginx config&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://redis.io&#34;&gt;Redis&lt;/a&gt; - to store configuration&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/openresty/lua-resty-redis&#34;&gt;lua-rest-redis&lt;/a&gt; - reach our Redis configuration from Nginx&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;A easier way to get these in one shot is to install the &lt;a href=&#34;http://openresty.org&#34;&gt;openresty&lt;/a&gt; bundle, which comes with the required modules and is way easier to install.&lt;/p&gt;
-
-&lt;h3 id=&#34;technique:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Technique&lt;/h3&gt;
-
-&lt;p&gt;The technique is simple - we use redis to set various keys, which are picked up by the Lua script. If the readonly mode is set, we then block all HTTP requests which modify a resource. So anything other than a GET and HEAD is blocked. You can set an option to determine how Nginx blocks the resource - either by throwing a 403 Forbidden error, or by setting a header for your app server to handle it however you deem fit. A custom header &lt;code&gt;X-READONLY&lt;/code&gt; is set to true so that the app can handle it accordingly.&lt;/p&gt;
-
-&lt;h3 id=&#34;settings:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Settings&lt;/h3&gt;
-
-&lt;p&gt;The following redis keys control the behavior of the gatekeeper:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;SET gridlock.readonly true&lt;/code&gt; - Turn on readonly mode&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;SET gridlock.readonly.mode redirect|forbid&lt;/code&gt; - if &lt;code&gt;forbid&lt;/code&gt;, nginx will exit with a 403 error. If &lt;code&gt;redirect&lt;/code&gt;, you can set a common error page to redirect to&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;SET gridlock.readonly.redirect_url&lt;/code&gt;- Define the redirect url for your app. If this is not set, and the mode is set to &lt;code&gt;redirect&lt;/code&gt;, we will redirect to the referer of the original request&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;LPUSH gridlock.readonly.allowed&lt;/code&gt; - A list of URLs that you want to explicitly allow. These are for exceptions like login forms which you would still want to function&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Once you have all the settings in place, you just flip the switch by setting &lt;code&gt;gridlock.readonly&lt;/code&gt; to true. The changes are live instantly without a reload! Once you maintainance window is done, simply set it to false, or delete the key. Zero downtime switching FTW!&lt;/p&gt;
-
-&lt;h3 id=&#34;demo-source:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Demo/Source&lt;/h3&gt;
-
-&lt;p&gt;The code for the script and a simple Node.js app are &lt;a href=&#34;https://github.com/Checksum/gridlock&#34;&gt;available in the repo&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&#34;warning:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Warning&lt;/h3&gt;
-
-&lt;p&gt;Although I&amp;rsquo;ve tested it out internally, absolutely no guarantees offered! If this breaks or burns your server, you are on your own.&lt;/p&gt;
-
-&lt;h3 id=&#34;future:50589d443b922318cb2cb6ce7f1b886f&#34;&gt;Future&lt;/h3&gt;
-
-&lt;p&gt;Currently, redis is hit everytime a request comes into Nginx. This obviously doesn&amp;rsquo;t work for high traffic sites. Figure out a way to use other lifecycle methods to periodically update and cache the settings.&lt;/p&gt;
-</description>
+      <guid>http://iambot.net/read-only-mode-for-webapps-using-nginx/</guid>
+      <description>Quite often, I&amp;rsquo;ve had to put webapps in read only mode during maintenance activities like migrating databases, moving web servers, etc. During such windows, users are allowed to browse and read their existing data, but no write operations are allowed as they may lead to data inconsistency.
+Most major frameworks have some sort of maintenance mode (including Django and Rails) which restricts the activity that a user is allowed to perform.</description>
     </item>
     
     <item>
@@ -71,191 +27,36 @@
       <pubDate>Sat, 20 Jun 2015 14:02:37 +0200</pubDate>
       
       <guid>http://iambot.net/about/</guid>
-      <description></description>
+      <description>A lil something about me.</description>
     </item>
     
     <item>
       <title>Custom Markdown extensions in Python</title>
-      <link>http://iambot.net/post/custom-markdown-extensions/</link>
+      <link>http://iambot.net/custom-markdown-extensions-in-python/</link>
       <pubDate>Fri, 17 Oct 2014 11:30:06 +0530</pubDate>
       
-      <guid>http://iambot.net/post/custom-markdown-extensions/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://daringfireball.net/projects/markdown/&#34;&gt;Markdown&lt;/a&gt;, that unwieldy, undying, but still relevant writing format has been through some &lt;a href=&#34;http://blog.codinghorror.com/standard-markdown-is-now-common-markdown/&#34;&gt;controversy&lt;/a&gt; recently. There are tons of custom implementations and extensions, with &lt;a href=&#34;https://help.github.com/articles/github-flavored-markdown/&#34;&gt;Github flavored markdown&lt;/a&gt; being one of the more popular dialects. GFM is a prime example of how Markdown can be enhanced with meaningful extensions - from URL auto-linking, tables, to task lists.&lt;/p&gt;
-
-&lt;p&gt;One of the reasons for alternate implementations is that Markdown doesn&amp;rsquo;t have an official spec. Unfortunately, attempts to &lt;a href=&#34;http://commonmark.org/&#34;&gt;standardize&lt;/a&gt; the format has not been blessed by the original creator, John Gruber.&lt;/p&gt;
-
-&lt;p&gt;So why not have some fun and create our own Markdown extension! For this exercise, we will try and mimic the &lt;a href=&#34;https://help.github.com/articles/writing-on-github/#task-lists&#34;&gt;task list&lt;/a&gt; syntax, which is also similar to the orgmode &lt;a href=&#34;http://orgmode.org/manual/Checkboxes.html#Checkboxes&#34;&gt;checkbox list&lt;/a&gt;. We have to transform the following syntax:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;- [ ] Some important task
-- [x] A task that is already done
-- [ ] Another thing for me to do
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;into a list with checkboxes:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://www.dropbox.com/s/tl9rwg3wmghodzn/Screenshot%202014-10-18%2010.46.47.png?dl=1&#34; alt=&#34;Markdown task list&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Let us begin! We start off by creating a custom markdown class, extending from &lt;code&gt;markdown2.Markdown&lt;/code&gt;. Fortunately for us, markdown2 offers pre and post processing hooks, which we can use to plug in our formatting rules. Since our syntax is similar to Markdown&amp;rsquo;s list syntax, we format it during preprocessing.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import markdown2
-
-class CustomMarkdown(markdown2.Markdown):
-
-  &#39;&#39;&#39; Our custom markdown class &#39;&#39;&#39;
-  def preprocess(self, text):
-	  pass
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Next up, we have to define the regex and corresponding HTML template for matching and replacing.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;reTaskList = re.compile(&#39;&#39;&#39;
-(?P&amp;lt;prefix&amp;gt;[\r\n|\n|\r]*)
--\s\[(?P&amp;lt;done&amp;gt;[x|\s]?)\]\s*(?P&amp;lt;item&amp;gt;.*)
-(?P&amp;lt;suffix&amp;gt;[\r\n|\n|\r]*)
-&#39;&#39;&#39;, re.IGNORECASE | re.MULTILINE | re.VERBOSE)
-
-LIST_ITEM_TEMPLATE = &#39;&#39;&#39;
-&amp;lt;li class=&amp;quot;markdown-task-item %s&amp;quot;&amp;gt;
-  &amp;lt;label class=&amp;quot;markdown-task-label&amp;quot;&amp;gt;
-	&amp;lt;input type=&amp;quot;checkbox&amp;quot; %s&amp;gt;
-	%s
-  &amp;lt;/label&amp;gt;
-&amp;lt;/li&amp;gt;&#39;&#39;&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Our replacing logic is simple. For every match in the pattern, we replace it with the &lt;code&gt;li&lt;/code&gt; definition in the template. If a list item is checked with &lt;code&gt;[x]&lt;/code&gt;, we make sure that the checkbox is also checked. Also, we add a class denoting if the item is &lt;code&gt;pending&lt;/code&gt; or &lt;code&gt;completed&lt;/code&gt;. This can come handy for formatting.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def preprocess(self, text):
-  def replace(match):
-    item = match.groups()
-    html = &#39;&#39;
-    # The starting of the list if denoted by the first group having 2 or more newline chars
-    if len(item[0]) &amp;gt;= 2:
-      html += &#39;\n&amp;lt;ul class=&amp;quot;md-task-list&amp;quot;&amp;gt;&#39;
-
-    # Now, toggle the checked status
-    checked, klass = (&#39;checked=&amp;quot;checked&amp;quot;&#39;, &#39;completed&#39;) if item[1].lower() == &#39;x&#39; else (&#39;&#39;, &#39;pending&#39;)
-    html += CustomMarkdown.LIST_ITEM_TEMPLATE % (klass, checked, item[2])
-
-    # Similarly, check for ending
-    if len(item[3]) &amp;gt;= 2:
-      html += &#39;&amp;lt;/ul&amp;gt;\n&#39;
-
-    return html
-
-  return CustomMarkdown.reTaskList.sub(replace, text)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And as a final step, define the actual method that will use our &lt;code&gt;CustomMarkdown&lt;/code&gt; processor.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;def markdown(text, html4tags=False, tab_width=markdown2.DEFAULT_TAB_WIDTH, safe_mode=None, extras=None, link_patterns=None, use_file_vars=False):
-
-	return CustomMarkdown(html4tags=html4tags, tab_width=tab_width, safe_mode=safe_mode, extras=extras, link_patterns=link_patterns, use_file_vars=use_file_vars).convert(text)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Find the entire code and a working example in &lt;a href=&#34;https://gist.github.com/Checksum/e3e8f052c378f8a0a3a9&#34;&gt;this gist&lt;/a&gt;.&lt;/p&gt;
-</description>
+      <guid>http://iambot.net/custom-markdown-extensions-in-python/</guid>
+      <description>Markdown, that unwieldy, undying, but still relevant writing format has been through some controversy recently. There are tons of custom implementations and extensions, with Github flavored markdown being one of the more popular dialects. GFM is a prime example of how Markdown can be enhanced with meaningful extensions - from URL auto-linking, tables, to task lists.
+One of the reasons for alternate implementations is that Markdown doesn&amp;rsquo;t have an official spec.</description>
     </item>
     
     <item>
       <title>Using PJAX with Tornado</title>
-      <link>http://iambot.net/post/using-pjax-with-tornado/</link>
+      <link>http://iambot.net/using-pjax-with-tornado/</link>
       <pubDate>Thu, 09 Oct 2014 11:29:50 +0530</pubDate>
       
-      <guid>http://iambot.net/post/using-pjax-with-tornado/</guid>
-      <description>&lt;p&gt;I love working with &lt;a href=&#34;https://github.com/tornadoweb/tornado/&#34;&gt;Tornado&lt;/a&gt;. Unlike Django its lightweight, supports async operations and is pretty straightforward to start off with. Tornado&amp;rsquo;s templating system is pretty nice too, and lot less verbose than Django&amp;rsquo;s. However, things start getting messy when you have to deal with conditional template inheritance.&lt;/p&gt;
-
-&lt;p&gt;Why would you want that? A prime example is when you use &lt;a href=&#34;https://github.com/defunkt/jquery-pjax&#34;&gt;PJAX&lt;/a&gt;. When you PJAXify a link, you typically would want to render only the content of that page, and not the entire layout. In other words, the template inheritance check should be conditional:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;{% if not is_pjax %}
-  {% extend &amp;quot;layout.html&amp;quot; %}
-{% end %}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In an ideal world, the above code would just work. Unfortunately, Tornado does not support conditional template inheritance. So we will need to figure out a way to work around that limitation. Thankfully, Tornado is very modular and allows us to plug in our custom rendering code.&lt;/p&gt;
-
-&lt;p&gt;Firstly, we need to identify if the request is a PJAX/AJAX request&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;import tornado.web
-from tornado.web import RequestHandler
-
-AJAX_HEADERS = (&#39;X-PJAX&#39;,&#39;X-Requested-With&#39;,)
-
-class BaseHandler(tornado.web.RequestHandler):
-
-    def initialize(self):
-        self.is_ajax = False
-
-    def prepare(self):
-        self.is_ajax = any(hdr in self.request.headers for hdr in AJAX_HEADERS)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Next, we define the template that we want to work with, say &lt;code&gt;index.tmpl&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;{% block content %}
-    &amp;lt;h1&amp;gt;Hey this is a PJAX response!&amp;lt;/h1&amp;gt;
-    &amp;lt;p&amp;gt;This template will extend from the layout when the request is not a PJAX request, else will render only this block!&amp;lt;/p&amp;gt;
-{% end %}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;One thing to note is that we &lt;strong&gt;aren&amp;rsquo;t extending from the layout&lt;/strong&gt; here. This will be handled in the render function. For the sake of clarity, I prefer to have a separate method &lt;code&gt;pjax_render&lt;/code&gt;, so that it is clear that we are dealing with a PJAX request.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-PJAX_TEMPLATE = &#39;&#39;&#39;
-{{ % extends &amp;quot;{0}/views/layout.html&amp;quot; % }}
-{{ % include &amp;quot;{0}/views/{1}&amp;quot; % }}
-&#39;&#39;&#39;
-
-def _get_loader(self):
-    template_path = self.get_template_path()
-    with RequestHandler._template_loader_lock:
-        if template_path not in RequestHandler._template_loaders:
-            loader = self.create_template_loader(template_path)
-            RequestHandler._template_loaders[template_path] = loader
-        else:
-            loader = RequestHandler._template_loaders[template_path]
-    return loader
-
-def render_pjax(self, template_name, **kwargs):
-    if not self.is_ajax:
-        loader = self._get_loader()
-        template = PJAX_TEMPLATE.format(BASE_DIR, template_name)
-        namespace = self.get_template_namespace()
-        namespace.update(kwargs)
-        self.write(tornado.template.Template(
-            template, loader=loader).generate(**namespace)
-        )
-    else:
-        self.write(self.render_string(template_name, **kwargs))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The &lt;code&gt;_get_loader&lt;/code&gt; method returns the template loader that is being used. The &lt;code&gt;render_pjax&lt;/code&gt; method has the same signature as &lt;code&gt;RequestHandler.render&lt;/code&gt; and checks if the current request is a PJAX request. If yes, then it simply writes out the template content. If no, then we automatically extend from the layout. That template code is defined in &lt;code&gt;PJAX_TEMPLATE&lt;/code&gt; and can be customized as required.&lt;/p&gt;
-
-&lt;p&gt;To use this, simply replace the &lt;code&gt;render&lt;/code&gt; call in your handler to &lt;code&gt;render_pjax&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;class HomeController(BaseHandler):
-    def get(self):
-        self.render_pjax(&amp;quot;index.tmpl&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And that&amp;rsquo;s it. You can now safely use AJAX/PJAX for any link in your app, thereby improving response time and saving those precious ms for your users.&lt;/p&gt;
-</description>
+      <guid>http://iambot.net/using-pjax-with-tornado/</guid>
+      <description>I love working with Tornado. Unlike Django its lightweight, supports async operations and is pretty straightforward to start off with. Tornado&amp;rsquo;s templating system is pretty nice too, and lot less verbose than Django&amp;rsquo;s. However, things start getting messy when you have to deal with conditional template inheritance.
+Why would you want that? A prime example is when you use PJAX. When you PJAXify a link, you typically would want to render only the content of that page, and not the entire layout.</description>
     </item>
     
     <item>
       <title>A fresh start</title>
-      <link>http://iambot.net/post/a-fresh-start/</link>
+      <link>http://iambot.net/a-fresh-start/</link>
       <pubDate>Sat, 11 Jan 2014 11:51:01 +0530</pubDate>
       
-      <guid>http://iambot.net/post/a-fresh-start/</guid>
-      <description>&lt;p&gt;After yet another prolonged absence, I&amp;rsquo;m hoping the new year will mean better things for this blog. I&amp;rsquo;ve moved to a new domain registrar, a new host and a new blogging platform. After much deliberation, I moved away from Godaddy to Namecheap and it was hassle free. I kind of outgrew my old shared host (thanks to &lt;a href=&#34;http://lvcs.net&#34;&gt;http://lvcs.net&lt;/a&gt; for the really cheap plan where I paid only about $5 a year for running a couple of sites). This is now hosted on a Openshift instance (for now).&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, all is not well. I lost my source (markdown) files for the old content (which was generated by octopress) due to a hard drive crash. Thankfully, I have full backup of the HTML files, which means I can still get the content back with some hacky scripting. I have moved over to Pelican, as I work with Python these days and would be easier for me to customize and play around with.&lt;/p&gt;
-
-&lt;p&gt;I also have a couple of interesting projects lined up, which has taken me into unknown territory. My respect for Python has grown and I also have been fiddling around with Go which seems to be fit right in-between C and Python for me. Hopefully I will also start blogging regularly about my first love (HTML/CSS). Although I would love a custom design for this blog, it will take a while before I can get around to it.&lt;/p&gt;
-
-&lt;p&gt;Later.&lt;/p&gt;
-</description>
+      <guid>http://iambot.net/a-fresh-start/</guid>
+      <description>After yet another prolonged absence, I&amp;rsquo;m hoping the new year will mean better things for this blog. I&amp;rsquo;ve moved to a new domain registrar, a new host and a new blogging platform. After much deliberation, I moved away from Godaddy to Namecheap and it was hassle free. I kind of outgrew my old shared host (thanks to http://lvcs.net for the really cheap plan where I paid only about $5 a year for running a couple of sites).</description>
     </item>
     
   </channel>

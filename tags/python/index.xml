@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on I Am Bot</title>
-    <link>http://iambot.net/post/</link>
-    <description>Recent content in Posts on I Am Bot</description>
+    <title>Python on I Am Bot</title>
+    <link>http://iambot.net/tags/python/</link>
+    <description>Recent content in Python on I Am Bot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 04 Jun 2016 11:30:19 +0530</lastBuildDate>
+    <lastBuildDate>Fri, 17 Oct 2014 11:30:06 +0530</lastBuildDate>
     
-	<atom:link href="http://iambot.net/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://iambot.net/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Read only mode for webapps using Nginx</title>
-      <link>http://iambot.net/read-only-mode-for-webapps-using-nginx/</link>
-      <pubDate>Sat, 04 Jun 2016 11:30:19 +0530</pubDate>
-      
-      <guid>http://iambot.net/read-only-mode-for-webapps-using-nginx/</guid>
-      <description>Quite often, I&amp;rsquo;ve had to put webapps in read only mode during maintenance activities like migrating databases, moving web servers, etc. During such windows, users are allowed to browse and read their existing data, but no write operations are allowed as they may lead to data inconsistency.
-Most major frameworks have some sort of maintenance mode (including Django and Rails) which restricts the activity that a user is allowed to perform.</description>
-    </item>
     
     <item>
       <title>Custom Markdown extensions in Python</title>
@@ -39,15 +29,6 @@ One of the reasons for alternate implementations is that Markdown doesn&amp;rsqu
       <guid>http://iambot.net/using-pjax-with-tornado/</guid>
       <description>I love working with Tornado. Unlike Django its lightweight, supports async operations and is pretty straightforward to start off with. Tornado&amp;rsquo;s templating system is pretty nice too, and lot less verbose than Django&amp;rsquo;s. However, things start getting messy when you have to deal with conditional template inheritance.
 Why would you want that? A prime example is when you use PJAX. When you PJAXify a link, you typically would want to render only the content of that page, and not the entire layout.</description>
-    </item>
-    
-    <item>
-      <title>A fresh start</title>
-      <link>http://iambot.net/a-fresh-start/</link>
-      <pubDate>Sat, 11 Jan 2014 11:51:01 +0530</pubDate>
-      
-      <guid>http://iambot.net/a-fresh-start/</guid>
-      <description>After yet another prolonged absence, I&amp;rsquo;m hoping the new year will mean better things for this blog. I&amp;rsquo;ve moved to a new domain registrar, a new host and a new blogging platform. After much deliberation, I moved away from Godaddy to Namecheap and it was hassle free. I kind of outgrew my old shared host (thanks to http://lvcs.net for the really cheap plan where I paid only about $5 a year for running a couple of sites).</description>
     </item>
     
   </channel>
